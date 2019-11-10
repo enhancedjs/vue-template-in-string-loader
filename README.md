@@ -1,6 +1,6 @@
 # vue-template-in-string-loader
 
-[![Build Status](https://travis-ci.com/paleo/vue-template-in-string-loader.svg?branch=master)](https://travis-ci.com/paleo/vue-template-in-string-loader)
+[![Build Status](https://travis-ci.com/paleo/vue-template-in-string-loader.svg?token=qQM6HZjdgwkRqYbwB65t&branch=master)](https://travis-ci.com/paleo/vue-template-in-string-loader)
 
 Compile Vue templates in template strings at build time.
 
