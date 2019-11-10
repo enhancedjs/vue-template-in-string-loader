@@ -1,5 +1,7 @@
 # vue-template-in-string-loader
 
+[![Build Status](https://travis-ci.com/paleo/vue-template-in-string-loader.svg?branch=master)](https://travis-ci.com/paleo/vue-template-in-string-loader)
+
 Compile Vue templates in template strings at build time.
 
 It allow to write single file components in standard JavaScript and TypeScript source files.
