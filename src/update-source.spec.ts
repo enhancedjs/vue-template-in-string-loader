@@ -1,4 +1,4 @@
-import { updateSource, UpdateSourceOptions } from "./update-source";
+import { updateSource, UpdateSourceOptions } from "./update-source"
 
 describe("Tests of 'updateSource'", () => {
   const options: UpdateSourceOptions = {

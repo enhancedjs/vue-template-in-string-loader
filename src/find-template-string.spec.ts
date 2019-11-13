@@ -1,7 +1,6 @@
-import { findTemplateString } from "./find-template-string";
+import { findTemplateString } from "./find-template-string"
 
 describe("Tests of 'findTemplateString'", () => {
-
   test("With prefix '/* html */'", () => {
     const result = findTemplateString(
       `
