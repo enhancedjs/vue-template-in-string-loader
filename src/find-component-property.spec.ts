@@ -3,7 +3,7 @@ import { findComponentProperty } from "./find-component-property"
 describe("Tests of 'findComponentProperty'", () => {
   test("Simple 'template'", () => {
     const source = `
-       sdsd                       export default {
+      export default {
       template
     }
     `
