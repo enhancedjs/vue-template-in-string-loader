@@ -1,10 +1,9 @@
-import { updateSource, UpdateSourceOptions } from "./update-source"
+import { updateSource, UpdateSourceOptions } from "./update-source";
 
 describe("Tests of 'updateSource'", () => {
-
   const options: UpdateSourceOptions = {
     fileName: "file1.js",
-    filePath: "a/b/c/file1.js",
+    filePath: "a/b/c/file1.js"
   }
 
   test("One variable named 'template'", () => {

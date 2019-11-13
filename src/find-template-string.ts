@@ -16,8 +16,9 @@ const defaultPrefixes = [
   "vueTemplate"
 ]
 
-export function findTemplateString(source: string, options?: FindTemplateOptions): FoundTemplate[] {
-  const prefixes = options?.prefixes ?? defaultPrefixes
+export function findTemplateString(source: string, varNameFromProp: string, options?: FindTemplateOptions): FoundTemplate | undefined {
+  // tslint:disable-next-line: whitespace
+  const prefixes = options ?.prefixes ?? defaultPrefixes
 
   const varDeclar = "(?:const|let|var)\\s+([a-zA-Z_][a-zA-Z0-9_]*)"
   const prefix = "(?:" + prefixes.join("|") + ")"
@@ -28,21 +29,25 @@ export function findTemplateString(source: string, options?: FindTemplateOptions
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(`${varDeclar}\\s*=\\s*${prefix}\\s*(${templateString})(?:\\s*;)?`, "g")
 
-  const result: FoundTemplate[] = []
+  let result: FoundTemplate
   let found: RegExpExecArray | null
 
 
   while ((found = reg.exec(source)) !== null) {
     const [code, varName, jsString] = found
-    result.push({
-      start: found.index!,
-      end: found.index! + code.length,
-      code,
-      varName,
-      // tslint:disable-next-line: no-eval
-      value: eval(jsString)
-    })
+    if (varName === varNameFromProp) {
+       return result = {
+         start: found.index!,
+         end: found.index! + code.length,
+         code,
+         varName,
+         // tslint:disable-next-line: no-eval
+         value: eval(jsString)
+       }
+    } else {
+        throw new Error("Error: Template not found")
+    }
+
   }
 
-  return result
 }

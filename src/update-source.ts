@@ -1,6 +1,6 @@
-import { compileTemplate } from "@vue/component-compiler-utils"
-import { findComponentProperty } from "./find-component-property"
-import { findTemplateString } from "./find-template-string"
+import { compileTemplate } from "@vue/component-compiler-utils";
+import { findComponentProperty } from "./find-component-property";
+import { findTemplateString } from "./find-template-string";
 const compiler = require("vue-template-compiler")
 
 export interface UpdatedSource {
@@ -15,48 +15,60 @@ export interface UpdateSourceOptions {
 }
 
 export function updateSource(source: string, options: UpdateSourceOptions): UpdatedSource {
-  const templateStrings = findTemplateString(source)
-  if (templateStrings.length === 0) {
+  console.log("updateSource function")
+  // const templateStrings = findTemplateString(source)
+  // console.log("template string", templateStrings)
+  // if (templateStrings.length === 0) {
+  //   return {
+  //     result: source,
+  //     updated: false
+  //   }
+  // }
+
+  let result = source
+  const compProp = findComponentProperty(result)
+  if (!compProp)
+    throw new Error("Error Component Property not found!")
+
+  const templateString = findTemplateString(source, compProp.varName)
+  console.log("template string", templateString)
+  if (!templateString) {
     return {
       result: source,
       updated: false
     }
   }
 
-  let result = source
-
-  for (const templStr of templateStrings.reverse()) {
-    const compProp = findComponentProperty(result, templStr.varName)
-    if (!compProp) {
-      console.warn(`Cannot compile the template of '${templStr.varName}'`)
-      continue
-    }
-
-    // Call the Vue compiler
-    const compiled = compileTemplate({
-      source: templStr.value,
+  //  Call the Vue compiler
+  const compiled = compileTemplate({
+      source: templateString.value,
       filename: options.fileName,
       compiler,
       transformAssetUrls: false,
-      isProduction: false,
-    })
+      isProduction: false
+  })
 
     // Wrap the compiled result in a variable
-    const code = `const ${templStr.varName} = (() => {
+  const code = `const ${templateString.varName} = (() => {
 ${compiled.code}
   return { render, staticRenderFns }
 })()`
 
     // Replace the 'template' property by 'render' and 'staticRenderFns' properties
-    result = result.substr(0, compProp.start) + `...${templStr.varName}` + result.substr(compProp.end)
+  result =
+    result.substr(0, compProp.start) +
+    `...${templateString.varName}` +
+    result.substr(compProp.end)
 
     // Replace the template string with the variable from compilation
-    result = result.substr(0, templStr.start) + code + result.substr(templStr.end)
-
-  }
+  result =
+    result.substr(0, templateString.start) +
+    code +
+    result.substr(templateString.end)
 
   return {
     result,
     updated: result !== source
   }
+
 }

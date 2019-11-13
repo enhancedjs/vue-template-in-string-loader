@@ -3,11 +3,9 @@
     "source.fixAll": true,
     "source.organizeImports": true
   },
-  "editor.formatOnSave": true,
   "editor.insertSpaces": true,
-  "editor.rulers": [
-    120
-  ],
+  "editor.rulers": [120],
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 132,
   "editor.wordWrap": "wordWrapColumn",
