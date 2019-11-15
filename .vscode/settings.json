@@ -1,12 +1,14 @@
 {
-  "editor.codeActionsOnSave": {
-    "source.fixAll": true,
-    "source.organizeImports": true
+  "[typescript]": {
+    "editor.codeActionsOnSave": {
+      "source.fixAll": true,
+      "source.organizeImports": true
+    },
+    "editor.defaultFormatter": "vscode.typescript-language-features",
+    "editor.formatOnSave": true
   },
-  "editor.formatOnSave": true,
   "editor.insertSpaces": true,
   "editor.rulers": [120],
-  "vetur.format.defaultFormatter.js": "vscode-typescript",
   "editor.tabSize": 2,
   "editor.wordWrapColumn": 132,
   "editor.wordWrap": "wordWrapColumn",
@@ -19,6 +21,11 @@
   "typescript.locale": "en",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.quoteStyle": "double",
+<<<<<<< HEAD
   "typescript.tsdk": "node_modules/typescript/lib",
   "vetur.format.defaultFormatter.ts": "vscode-typescript"
 }
+=======
+  "typescript.tsdk": "node_modules/typescript/lib"
+}
+>>>>>>> 3bd0faf1ee9ff6d807b00555c4f46c3a3f8ac9e1
