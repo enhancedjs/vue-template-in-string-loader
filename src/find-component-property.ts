@@ -1,4 +1,4 @@
-import { defaultPrefix, FindTemplateOptions } from "./find-template-string"
+import { FindTemplateOptions, lineBegin, templateStringRegex } from "./find-template-string"
 
 export interface FoundProperty {
   start: number
@@ -12,15 +12,12 @@ export function findComponentProperty(
   source: string,
   options?: FindTemplateOptions
 ): FoundProperty | undefined {
-  // tslint:disable-next-line: whitespace
-  const prefix = options?.prefix ? `(?:${options?.prefix})` : defaultPrefix
 
-  const lineBegin = `(?:^|\\n)`
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
   const compEnd = "\\s*(?:}|,)"
-  const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
-  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|\\s*${prefix}\\s*(${templateString})(?:\\s*;)?)`
+  // tslint:disable-next-line: whitespace
+  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|${templateStringRegex(options?.prefix)})`
   const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
 
   const reg = new RegExp(

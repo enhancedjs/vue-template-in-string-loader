@@ -10,26 +10,32 @@ export interface FindTemplateOptions {
   prefix: string
 }
 
-// export const defaultPrefixes = ["/\\*\\s*html\\s*\\*/", "html", "vueTemplate"]
-export const defaultPrefix = ["(?:/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/)?\\s*(?:[a-zA-Z_][a-zA-Z0-9_]*)?"]
+export function templateStringRegex(prefix?: string) {
+  const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
+  const identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
+  const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
+  prefix = prefix ? `(?:${prefix})` : defaultPrefix
+  const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
+  return `\\s*${prefix}\\s*(${templateString})`
+}
+
+export const lineBegin = `(?:^|\\n)`
 
 export function findTemplateString(
   source: string,
   varName: string,
   options?: FindTemplateOptions
 ): FoundTemplate {
-  // tslint:disable-next-line: whitespace
-  const prefix = options?.prefix ? `(?:${options?.prefix})` : defaultPrefix
 
-  const lineBegin = `(?:^|\\n)`
   const varDeclar = `(?:const|let|var)\\s${varName}`
-  const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
+  const declEnd = "(?:\\s*;)?"
   // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
   // const singleQuote = "'(?:[^'\\\\\\n]*(?:\\\\.[^'\\\\\\n]*)*)'"
   // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
-    `${lineBegin}${varDeclar}\\s*=\\s*${prefix}\\s*(${templateString})(?:\\s*;)?`,
+    // tslint:disable-next-line: whitespace
+    `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.prefix)}\\s*${declEnd}`,
     "g"
   )
 

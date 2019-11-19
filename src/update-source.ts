@@ -34,11 +34,11 @@ export function updateSource(
   //  Call the Vue compiler
     const compiled = compileTemplate({
       // tslint:disable-next-line: no-eval
-    source: eval(compProp.value),
-    filename: options.fileName,
-    compiler,
-    transformAssetUrls: false,
-    isProduction: false
+      source: eval(compProp.value),
+      filename: options.fileName,
+      compiler,
+      transformAssetUrls: false,
+      isProduction: false
   })
 
   // Wrap the compiled result in a property
