@@ -27,6 +27,7 @@ export function updateSource(
     }
   }
 
+  // Template prompt assignmment
   if (compProp.value) {
     // const templateString = findTemplateString(source, compProp.varName)
 
@@ -40,23 +41,18 @@ export function updateSource(
     isProduction: false
   })
 
-  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
-    let result = source
-    result =
-    result.substr(0, compProp.start) +
-    `...template` +
-    result.substr(compProp.end)
-
-  // Wrap the compiled result in a variable
-    const code = `const template = (() => {
+  // Wrap the compiled result in a property
+    const code = `template: (() => {
 ${compiled.code}
   return { render, staticRenderFns }
 })()`
 
-  // Replace the template string with the variable from compilation
+  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
+    let result = source
     result =
-    result.substr(0, compProp.end) +
-    code
+    result.substr(0, compProp.start) +
+    `${code}` +
+    result.substr(compProp.end)
 
     console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
 
