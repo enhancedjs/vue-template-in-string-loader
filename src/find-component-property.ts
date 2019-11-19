@@ -5,7 +5,7 @@ export interface FoundProperty {
   end: number
   code: string
   varName: string
-  value: string
+  inlineValue?: string
 }
 
 export function findComponentProperty(
@@ -24,24 +24,22 @@ export function findComponentProperty(
     "g"
   )
 
-  const result: FoundProperty[] = []
-  let found: RegExpExecArray | null
+  const found = reg.exec(source)
+  if (!found)
+    return
+  if (reg.exec(source))
+    throw new Error(`There are several candidates for the component`)
 
-  while ((found = reg.exec(source)) !== null) {
-    // console.log("find-component-property found", found)
-    const [, before, code, varName, value] = found
-    const start = found.index + before.length
-    result.push({
-      start,
-      end: start + code.length,
-      code,
-      varName: !varName ? "template" : varName,
-      value
-    })
+  // console.log("==find-component-property found", found)
+  const [, before, code, varName, jsString] = found
+  const start = found.index + before.length
+
+  return {
+    start,
+    end: start + code.length,
+    code,
+    varName: !varName ? "template" : varName,
+    // tslint:disable-next-line: no-eval
+    inlineValue: jsString === undefined ? undefined : eval(jsString)
   }
-
-  if (result.length >= 2)
-    throw new Error(`There are several candidate properties for the template`)
-  // console.log("find-component-property result", result[0])
-  return result[0]
 }

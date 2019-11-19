@@ -27,7 +27,7 @@ export function updateSource(
     }
   }
 
-  const result = compProp.value ?
+  const result = compProp.inlineValue ?
     updateInlineProperty(compProp, source, options) :
     updateDeclaredVariable(compProp, source, options)
 
@@ -76,8 +76,7 @@ ${compiled.code}
 function updateInlineProperty(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
   //  Call the Vue compiler
   const compiled = compileTemplate({
-    // tslint:disable-next-line: no-eval
-    source: eval(compProp.value),
+    source: compProp.inlineValue!,
     filename: options.fileName,
     compiler,
     transformAssetUrls: false,

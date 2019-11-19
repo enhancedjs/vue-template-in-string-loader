@@ -18,7 +18,7 @@ export interface FoundTemplate {
   end: number
   code: string
   varName: string
-  value?: string
+  value: string
 }
 
 export function findTemplateString(

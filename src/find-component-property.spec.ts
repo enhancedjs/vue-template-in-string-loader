@@ -41,6 +41,7 @@ export default createComponent({
   })
       `
     const result = findComponentProperty(source)
+    console.log("=========>", result)
     expect(result).toBeDefined()
     expect(result!.code).toBe("template")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
@@ -98,13 +99,13 @@ const other = {
 export default {
   name: "C1",
   p2: "a",
-  p3: "b",
+  p3: callSomething("b"),
   template,
 }
     `
     const result = findComponentProperty(source)
     expect(result).toBeDefined()
-    console.log("=========>", result)
+    // console.log("=========>", result)
     // expect(result.value)
   })
 })
