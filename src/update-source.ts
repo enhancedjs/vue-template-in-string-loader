@@ -57,8 +57,10 @@ ${compiled.code}
     code +
     result.substr(templateString.end)
 
+  console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
+
   return {
     result,
-    updated: result !== source
+    updated: true
   }
 }
