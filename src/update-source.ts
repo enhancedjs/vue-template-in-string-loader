@@ -18,28 +18,16 @@ export function updateSource(
   source: string,
   options: UpdateSourceOptions
 ): UpdatedSource {
-  console.log("updateSource function")
-  // const templateStrings = findTemplateString(source)
-  // console.log("template string", templateStrings)
-  // if (templateStrings.length === 0) {
-  //   return {
-  //     result: source,
-  //     updated: false
-  //   }
-  // }
 
-  let result = source
-  const compProp = findComponentProperty(result)
-  if (!compProp) throw new Error("Error Component Property not found!")
-
-  const templateString = findTemplateString(source, compProp.varName)
-  console.log("templateString", templateString)
-  if (!templateString) {
+  const compProp = findComponentProperty(source)
+  if (!compProp) {
     return {
       result: source,
       updated: false
     }
   }
+
+  const templateString = findTemplateString(source, compProp.varName)
 
   //  Call the Vue compiler
   const compiled = compileTemplate({
@@ -50,17 +38,18 @@ export function updateSource(
     isProduction: false
   })
 
+  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
+  let result = source
+  result =
+    result.substr(0, compProp.start) +
+    `...${templateString.varName}` +
+    result.substr(compProp.end)
+
   // Wrap the compiled result in a variable
   const code = `const ${templateString.varName} = (() => {
 ${compiled.code}
   return { render, staticRenderFns }
 })()`
-
-  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
-  result =
-    result.substr(0, compProp.start) +
-    `...${templateString.varName}` +
-    result.substr(compProp.end)
 
   // Replace the template string with the variable from compilation
   result =

@@ -14,13 +14,14 @@ const defaultPrefixes = ["/\\*\\s*html\\s*\\*/", "html", "vueTemplate"]
 
 export function findTemplateString(
   source: string,
-  varNameFromProp: string,
+  varName: string,
   options?: FindTemplateOptions
-): FoundTemplate | undefined {
+): FoundTemplate {
   // tslint:disable-next-line: whitespace
   const prefixes = options?.prefixes ?? defaultPrefixes
 
-  const varDeclar = `(?:const|let|var)\\s${varNameFromProp}`
+  const lineBegin = `(?:^|\\n)`
+  const varDeclar = `(?:const|let|var)\\s${varName}`
   const prefix = "(?:" + prefixes.join("|") + ")"
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
@@ -28,32 +29,24 @@ export function findTemplateString(
   // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
-    `${varDeclar}\\s*=\\s*${prefix}\\s*(${templateString})(?:\\s*;)?`,
+    `${lineBegin}${varDeclar}\\s*=\\s*${prefix}\\s*(${templateString})(?:\\s*;)?`,
     "g"
   )
 
-  const result: FoundTemplate[] = []
-  let found: RegExpExecArray | null
+  const found = reg.exec(source)
 
-  while ((found = reg.exec(source)) !== null) {
-    const [code, jsString] = found
-    result.push({
-      start: found.index!,
-      end: found.index! + code.length,
-      code,
-      varName: varNameFromProp,
-      // tslint:disable-next-line: no-eval
-      value: eval(jsString)
-    })
+  if (!found)
+    throw new Error(`Cannot find the declaration of '${varName}'`)
+  if (reg.exec(source))
+    throw new Error(`There are several candidates for the declaration of '${varName}'`)
+
+  const [code, jsString] = found
+  return {
+    start: found.index!,
+    end: found.index! + code.length,
+    code,
+    varName,
+    // tslint:disable-next-line: no-eval
+    value: eval(jsString)
   }
-
-  if (result.length >= 2)
-    throw new Error(`There are several candidate variables for property`)
-
-  if ((found = reg.exec(source)) === null) {
-    console.error("Error: Template not found")
-  }
-
-  console.log("find-template-string result", result[0])
-  return result[0]
 }
