@@ -8,12 +8,9 @@ describe("Tests of 'updateSource'", () => {
 
   test("One variable named 'template'", () => {
     const source = `
-// before
-const template = /*  html */\`<p>abc</p>\`;
-// after
 export default createComponent({
   name: "Comp1",
-  template,
+  template: /*  html */ df \`<p>abc</p>\`,
   setup() {
   }
 })

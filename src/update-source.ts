@@ -27,6 +27,47 @@ export function updateSource(
     }
   }
 
+  if (compProp.value) {
+    // const templateString = findTemplateString(source, compProp.varName)
+
+  //  Call the Vue compiler
+    const compiled = compileTemplate({
+      // tslint:disable-next-line: no-eval
+    source: eval(compProp.value),
+    filename: options.fileName,
+    compiler,
+    transformAssetUrls: false,
+    isProduction: false
+  })
+
+  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
+    let result = source
+    result =
+    result.substr(0, compProp.start) +
+    `...template` +
+    result.substr(compProp.end)
+
+  // Wrap the compiled result in a variable
+    const code = `const template = (() => {
+${compiled.code}
+  return { render, staticRenderFns }
+})()`
+
+  // Replace the template string with the variable from compilation
+    result =
+    result.substr(0, compProp.end) +
+    code
+
+    console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
+
+    return {
+    result,
+    updated: true
+  }
+
+  }
+
+
   const templateString = findTemplateString(source, compProp.varName)
 
   //  Call the Vue compiler

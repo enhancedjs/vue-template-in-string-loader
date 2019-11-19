@@ -5,6 +5,7 @@ export interface FoundProperty {
   end: number
   code: string
   varName: string
+  value: string
 }
 
 export function findComponentProperty(
@@ -18,7 +19,7 @@ export function findComponentProperty(
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
   const compEnd = "\\s*(?:}|,)"
-  const prefix = "(?:" + prefixes.join("|") + ")"
+  const prefix = "(?:\\s*" + prefixes.join("|") + "\\s*)"
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|\\s*${prefix}\\s*(${templateString})(?:\\s*;)?)`
   const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
@@ -33,13 +34,14 @@ export function findComponentProperty(
 
   while ((found = reg.exec(source)) !== null) {
     console.log("find-component-property found", found)
-    const [, before, code, varName] = found
+    const [, before, code, varName, value] = found
     const start = found.index + before.length
     result.push({
       start,
       end: start + code.length,
       code,
-      varName: !varName ? "template" : varName
+      varName: !varName ? "template" : varName,
+      value
     })
   }
 

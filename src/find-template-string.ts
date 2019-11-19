@@ -11,7 +11,7 @@ export interface FindTemplateOptions {
 }
 
 // export const defaultPrefixes = ["/\\*\\s*html\\s*\\*/", "html", "vueTemplate"]
-export const defaultPrefixes = ["(?:/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/)?(?:[a-zA-Z_][a-zA-Z0-9_]*)?"]
+export const defaultPrefixes = ["(?:/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/)?(?:\\s*[a-zA-Z_][a-zA-Z0-9_]*)?"]
 
 export function findTemplateString(
   source: string,
@@ -23,7 +23,7 @@ export function findTemplateString(
 
   const lineBegin = `(?:^|\\n)`
   const varDeclar = `(?:const|let|var)\\s${varName}`
-  const prefix = "(?:" + prefixes.join("|") + ")"
+  const prefix = "(?:\\s*" + prefixes.join("|") + "\\s*)"
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
   // const singleQuote = "'(?:[^'\\\\\\n]*(?:\\\\.[^'\\\\\\n]*)*)'"
