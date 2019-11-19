@@ -83,8 +83,8 @@ function updateInlineProperty(compProp: FoundProperty, source: string, options: 
     isProduction: false
   })
 
-  // Wrap the compiled result in a property
-  const code = `template: (() => {
+  // Wrap the compiled result in properties
+  const code = `...(() => {
 ${compiled.code}
   return { render, staticRenderFns }
 })()`

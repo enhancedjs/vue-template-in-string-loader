@@ -41,7 +41,6 @@ export default createComponent({
   })
       `
     const result = findComponentProperty(source)
-    console.log("=========>", result)
     expect(result).toBeDefined()
     expect(result!.code).toBe("template")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
