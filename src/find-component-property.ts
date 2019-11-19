@@ -16,9 +16,10 @@ export function findComponentProperty(
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
   const compEnd = "\\s*(?:}|,)"
+  const varNameRegex = "[a-zA-Z_][a-zA-Z0-9_]*"
   // tslint:disable-next-line: whitespace
-  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|${templateStringRegex(options?.prefix)})`
-  const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
+  const propertyValueRegex = `(${varNameRegex}|${templateStringRegex(options?.prefix)})`
+  const templProp = `template(?:\\s*:\\s*${propertyValueRegex})?`
 
   const reg = new RegExp(
     `(${lineBegin}${compBegin}${compBefore})(${templProp})${compEnd}`,
