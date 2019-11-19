@@ -1,4 +1,4 @@
-import { defaultPrefixes } from "./find-template-string"
+import { defaultPrefixes, FindTemplateOptions } from "./find-template-string"
 
 export interface FoundProperty {
   start: number
@@ -8,21 +8,23 @@ export interface FoundProperty {
 }
 
 export function findComponentProperty(
-  source: string
+  source: string,
+  options?: FindTemplateOptions
 ): FoundProperty | undefined {
-  const prefixes = defaultPrefixes
+  // tslint:disable-next-line: whitespace
+  const prefixes = options?.prefixes ?? defaultPrefixes
 
-  const compBegin = "^\S?gexport\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
+  const lineBegin = `(?:^|\\n)`
+  const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
   const compEnd = "\\s*(?:}|,)"
   const prefix = "(?:" + prefixes.join("|") + ")"
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
-  const t = `\\s*${prefix}\\s*(${templateString})(?:\\s*;)?`
-  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*)`
+  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|\\s*${prefix}\\s*(${templateString})(?:\\s*;)?)`
   const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
 
   const reg = new RegExp(
-    `(${compBegin}${compBefore})(${templProp})${compEnd}`,
+    `(${lineBegin}${compBegin}${compBefore})(${templProp})${compEnd}`,
     "g"
   )
 
