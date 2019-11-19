@@ -1,4 +1,4 @@
-import { FindTemplateOptions, lineBegin, templateStringRegex } from "./find-template-string"
+import { FindTemplateOptions, identifier, lineBegin, templateStringRegex } from "./find-template-string"
 
 export interface FoundProperty {
   start: number
@@ -15,13 +15,12 @@ export function findComponentProperty(
 
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
-  const compEnd = "\\s*(?:}|,)"
-  // tslint:disable-next-line: whitespace
-  const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|${templateStringRegex(options?.prefix)})`
-  const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
+  const propValue = `(${identifier}|${templateStringRegex(options?.prefix)})`
+  const templProp = `template(?:\\s*:\\s*${propValue})?`
+  const compAfter = "\\s*(?:}|,)"
 
   const reg = new RegExp(
-    `(${lineBegin}${compBegin}${compBefore})(${templProp})${compEnd}`,
+    `(${lineBegin}${compBegin}${compBefore})(${templProp})${compAfter}`,
     "g"
   )
 
@@ -29,7 +28,7 @@ export function findComponentProperty(
   let found: RegExpExecArray | null
 
   while ((found = reg.exec(source)) !== null) {
-    console.log("find-component-property found", found)
+    // console.log("find-component-property found", found)
     const [, before, code, varName, value] = found
     const start = found.index + before.length
     result.push({
@@ -43,6 +42,6 @@ export function findComponentProperty(
 
   if (result.length >= 2)
     throw new Error(`There are several candidate properties for the template`)
-  console.log("find-component-property result", result[0])
+  // console.log("find-component-property result", result[0])
   return result[0]
 }

@@ -1,25 +1,25 @@
-export interface FoundTemplate {
-  start: number
-  end: number
-  code: string
-  varName: string
-  value: string
-}
-
-export interface FindTemplateOptions {
-  prefix: string
-}
+export const identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
+export const lineBegin = `(?:^|\\n)`
 
 export function templateStringRegex(prefix?: string) {
   const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
-  const identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
   const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
   prefix = prefix ? `(?:${prefix})` : defaultPrefix
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   return `\\s*${prefix}\\s*(${templateString})`
 }
 
-export const lineBegin = `(?:^|\\n)`
+export interface FindTemplateOptions {
+  prefix: string
+}
+
+export interface FoundTemplate {
+  start: number
+  end: number
+  code: string
+  varName: string
+  value?: string
+}
 
 export function findTemplateString(
   source: string,
