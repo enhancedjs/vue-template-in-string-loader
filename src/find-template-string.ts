@@ -40,10 +40,19 @@ export function findTemplateString(
   if (reg.exec(source))
     throw new Error(`There are several candidates for the declaration of '${varName}'`)
 
-  const [code, jsString] = found
+  let start = found.index!
+  let [code, jsString] = found
+  if (code[0] === "\n") {
+    ++start
+    code = code.substr(1)
+  }
+  const lastIndex = code.length - 1
+  if (code[lastIndex] === ";")
+    code = code.substr(0, lastIndex)
+
   return {
-    start: found.index!,
-    end: found.index! + code.length,
+    start,
+    end: start + code.length,
     code,
     varName,
     // tslint:disable-next-line: no-eval
