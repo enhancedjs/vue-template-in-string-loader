@@ -2,15 +2,16 @@ import { findComponentProperty } from "./find-component-property"
 
 describe("Tests of 'findComponentProperty'", () => {
   test("Simple 'template'", () => {
-    const source = `
-      export default {
-      template
+    // : \`<p>abc</p>\`
+    const source = `export default {
+      template:ghh
     }
     `
+    // /*  html */\`<p>abc</p>\`
     const result = findComponentProperty(source)
     console.log("Spec :", result)
     expect(result).toBeDefined()
-    expect(result!.code).toBe("template")
+    // expect(result!.code).toBe("template")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
   })
 

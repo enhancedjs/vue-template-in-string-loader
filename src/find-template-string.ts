@@ -10,7 +10,7 @@ export interface FindTemplateOptions {
   prefixes: string[]
 }
 
-const defaultPrefixes = ["/\\*\\s*html\\s*\\*/", "html", "vueTemplate"]
+export const defaultPrefixes = ["/\\*\\s*html\\s*\\*/", "html", "vueTemplate"]
 
 export function findTemplateString(
   source: string,
