@@ -19,11 +19,10 @@ export function findTemplateString(
   options?: FindTemplateOptions
 ): FoundTemplate {
   // tslint:disable-next-line: whitespace
-  let prefix = options?.prefix ?? defaultPrefix
+  const prefix = options?.prefix ? `(?:${options?.prefix})` : defaultPrefix
 
   const lineBegin = `(?:^|\\n)`
   const varDeclar = `(?:const|let|var)\\s${varName}`
-  prefix = `(?:${prefix})`
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
   // const singleQuote = "'(?:[^'\\\\\\n]*(?:\\\\.[^'\\\\\\n]*)*)'"

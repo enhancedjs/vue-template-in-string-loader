@@ -7,9 +7,8 @@ describe("Tests of 'findComponentProperty'", () => {
     }
     `
     const result = findComponentProperty(source)
-    console.log("Spec :", result)
     expect(result).toBeDefined()
-    // expect(result!.code).toBe("template")
+    expect(result!.code).toBe("template")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
   })
 
@@ -46,4 +45,15 @@ export default createComponent({
       expect(result!.code).toBe("template")
       expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
     })
+
+  test("Prompt template declaration to property", () => {
+    const source = `export default {
+      template: /*  html */\`<p>ab</p>\`
+    }
+    `
+    const result = findComponentProperty(source)
+    expect(result).toBeDefined()
+    expect(result!.code).toBe("template: /*  html */\`<p>ab</p>\`")
+    expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
+  })
 })

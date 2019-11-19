@@ -13,13 +13,12 @@ export function findComponentProperty(
   options?: FindTemplateOptions
 ): FoundProperty | undefined {
   // tslint:disable-next-line: whitespace
-  let prefix = options?.prefix ?? defaultPrefix
+  const prefix = options?.prefix ? `(?:${options?.prefix})` : defaultPrefix
 
   const lineBegin = `(?:^|\\n)`
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const compBefore = "\\s*(?:.*,\\s*)?"
   const compEnd = "\\s*(?:}|,)"
-  prefix = `(?:${prefix})`
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   const varNameRegex = `([a-zA-Z_][a-zA-Z0-9_]*|\\s*${prefix}\\s*(${templateString})(?:\\s*;)?)`
   const templProp = `template(?:\\s*:\\s*${varNameRegex})?`
