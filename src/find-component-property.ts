@@ -16,7 +16,7 @@ export function findComponentProperty(
   const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
   const propsWithoutBrackets = "(?:[^}{]*,)*"
   const compBefore = `\\s*(?:${propsWithoutBrackets}\\s*)?`
-  const propValue = `(${identifier}|${templateStringRegex(options?.prefix)})`
+  const propValue = `(${identifier}|${templateStringRegex(options?.templateStringPrefix)})`
   const templProp = `template(?:\\s*:\\s*${propValue})?`
   const compAfter = "\\s*(?:}|,)"
 

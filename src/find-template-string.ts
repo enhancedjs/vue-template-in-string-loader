@@ -10,7 +10,7 @@ export function templateStringRegex(prefix?: string) {
 }
 
 export interface FindTemplateOptions {
-  prefix: string
+  templateStringPrefix: string
 }
 
 export interface FoundTemplate {
@@ -35,7 +35,7 @@ export function findTemplateString(
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
     // tslint:disable-next-line: whitespace
-    `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.prefix)}\\s*${declEnd}`,
+    `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}\\s*${declEnd}`,
     "g"
   )
 
