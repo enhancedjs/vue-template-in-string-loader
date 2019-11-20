@@ -70,7 +70,8 @@ export default createComponent({
     const source = `
 export default {
   name: "C1",
-  props: {,
+  props: {
+    some,
     template,
   },
   template,
@@ -104,7 +105,6 @@ export default {
     `
     const result = findComponentProperty(source)
     expect(result).toBeDefined()
-    // console.log("=========>", result)
-    // expect(result.value)
+    expect(result!.varName).toBe("template")
   })
 })
