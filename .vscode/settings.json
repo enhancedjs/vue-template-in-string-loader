@@ -23,5 +23,8 @@
   "typescript.locale": "en",
   "typescript.preferences.importModuleSpecifier": "relative",
   "typescript.preferences.quoteStyle": "double",
-  "typescript.tsdk": "node_modules/typescript/lib"
+  "typescript.tsdk": "node_modules/typescript/lib",
+  "vetur.format.defaultFormatter.ts": "vscode-typescript",
+  "vetur.format.defaultFormatter.js": "vscode-typescript",
+  "editor.defaultFormatter": "ms-vscode.vscode-typescript-tslint-plugin",
 }
