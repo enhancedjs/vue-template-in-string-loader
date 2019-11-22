@@ -127,8 +127,9 @@ ${compiled.code}
 
    // Replace the 'template' property by 'render' and 'staticRenderFns' properties
     const result =
+    tagFunction +
       source.substr(0, compProp.start) +
-      `${code}` + tagFunction +
+      `${code}` +
       source.substr(compProp.end)
 
     return result
