@@ -10,7 +10,6 @@ const template = /* html */ def\`<p>abc</p>\`;
       `,
       "template"
     )
-    // console.log(result)
     expect(result).toBeDefined()
   })
 
@@ -24,7 +23,6 @@ const template = /* html */ def\`<p>abc</p>\`;
     `,
       "template"
     )
-    // console.log(result)
     expect(result).toBeDefined()
   })
 
@@ -34,7 +32,6 @@ const template = /* html */ def\`<p>abc</p>\`;
       `,
       "template"
     )
-    // console.log(result)
     expect(result).toBeDefined()
   })
 
@@ -51,22 +48,16 @@ const template = def \`<p>abc</p>\`;
       "template",
       prefix
     )
-    // console.log(result)
     expect(result).toBeDefined()
   })
 
-  //     test("With many variables candidate to property", () => {
-  //       const result = findTemplateString(
-  //         `
-  // // before
-  // const template = \`<p>abc</p>\`;
-  // const template = \`<p>abc</p>\`;
-  //   // after
-  //       `,
-  //         "template"
-  //       )
-  //       // console.log(result)
-  //       expect(result).toBeUndefined()
-  //     })
-
+  test("With many variables candidate to property", () => {
+    const source = `
+  // before
+  const template = \`<p>abc</p>\`;
+  const template = \`<p>abc</p>\`;
+    // after
+    `
+    expect(() => findTemplateString(source, "template")).toThrowError()
+  })
 })

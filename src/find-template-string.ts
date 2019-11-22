@@ -34,7 +34,6 @@ export function findTemplateString(
   // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
-    // tslint:disable-next-line: whitespace
     `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}\\s*${declEnd}`,
     "g"
   )

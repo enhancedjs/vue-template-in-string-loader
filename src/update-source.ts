@@ -3,11 +3,6 @@ import { findComponentProperty, FoundProperty } from "./find-component-property"
 import { FindTemplateOptions, findTemplateString } from "./find-template-string"
 const compiler = require("vue-template-compiler")
 
-export interface UpdatedSource {
-  result: string
-  updated: boolean
-}
-
 export interface UpdateSourceOptions {
   templateStringPrefix?: string
   filePath: string
@@ -15,32 +10,17 @@ export interface UpdateSourceOptions {
   sourceMap?: any
 }
 
-export function updateSource(
-  source: string,
-  options: UpdateSourceOptions
-): UpdatedSource {
-
+export function updateSource(source: string, options: UpdateSourceOptions): string {
   const userOptions: FindTemplateOptions = {
     templateStringPrefix: options.templateStringPrefix
   }
   const compProp = findComponentProperty(source, userOptions)
-  if (!compProp) {
-    return {
-      result: source,
-      updated: false
-    }
-  }
+  if (!compProp)
+    return source
 
-  const result = compProp.inlineValue ?
-    updateInlineProperty(compProp, source, options) :
-    updateDeclaredVariable(compProp, source, options)
-
-  // console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
-
-  return {
-    result,
-    updated: true
-  }
+  return compProp.inlineValue
+    ? updateInlineProperty(compProp, source, options)
+    : updateDeclaredVariable(compProp, source, options)
 }
 
 function updateDeclaredVariable(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {

@@ -15,9 +15,8 @@ export default createComponent({
   }
 })
     `
-    const { result, updated } = updateSource(source, options)
-    // console.log(result)
-    expect(updated).toBe(true)
+    const result = updateSource(source, options)
+    expect(result !== source).toBe(true)
     expect(result).toEqual(expect.not.stringContaining("<p>"))
   })
 
@@ -31,9 +30,8 @@ export default createComponent({
   }
 })
     `
-    const { result, updated } = updateSource(source, options)
-    // console.log(result)
-    expect(updated).toBe(true)
+    const result = updateSource(source, options)
+    expect(result !== source).toBe(true)
     expect(result).toEqual(expect.not.stringContaining("<p>"))
   })
 })
