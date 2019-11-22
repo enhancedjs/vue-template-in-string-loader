@@ -1,6 +1,6 @@
 import { compileTemplate } from "@vue/component-compiler-utils"
 import { findComponentProperty, FoundProperty } from "./find-component-property"
-import { FindTemplateOptions, findTemplateString } from "./find-template-string"
+import { findTemplateString } from "./find-template-string"
 const compiler = require("vue-template-compiler")
 
 export interface UpdateSourceOptions {
@@ -11,10 +11,7 @@ export interface UpdateSourceOptions {
 }
 
 export function updateSource(source: string, options: UpdateSourceOptions): string {
-  const userOptions: FindTemplateOptions = {
-    templateStringPrefix: options.templateStringPrefix
-  }
-  const compProp = findComponentProperty(source, userOptions)
+  const compProp = findComponentProperty(source, options)
   if (!compProp)
     return source
 
@@ -24,10 +21,7 @@ export function updateSource(source: string, options: UpdateSourceOptions): stri
 }
 
 function updateDeclaredVariable(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
-  const userOptions: FindTemplateOptions = {
-    templateStringPrefix: options.templateStringPrefix
-  }
-  const templateString = findTemplateString(source, compProp.varName, userOptions)
+  const templateString = findTemplateString(source, compProp.varName, options)
 
   //  Call the Vue compiler
   const compiled = compileTemplate({
