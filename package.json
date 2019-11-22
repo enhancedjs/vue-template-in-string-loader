@@ -2,6 +2,7 @@
   "name": "vue-template-in-string-loader",
   "private": true,
   "version": "0.0.1",
+  "license": "CC0-1.0",
   "description": "Compile Vue templates in template strings at build time.",
   "main": "dist/index.js",
   "scripts": {
@@ -33,10 +34,10 @@
     "type": "git",
     "url": "git+https://github.com/paleo/vue-template-in-string-loader.git"
   },
-  "license": "CC0-1.0",
   "keywords": [
     "vue",
     "template",
-    "string"
+    "string",
+    "webpack"
   ]
 }
