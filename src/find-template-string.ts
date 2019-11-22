@@ -3,9 +3,8 @@ export const lineBegin = `(?:^|\\n)`
 
 export function templateStringRegex(prefix?: string) {
   const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
-  const defaultPrefix = `(?:${comment})?\\s*(${identifier})?`
-  prefix = prefix ? `(${prefix})` : defaultPrefix
-  console.log("prefixDD", prefix)
+  const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
+  prefix = prefix ? `(?:${prefix})` : defaultPrefix
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
   return `\\s*${prefix}\\s*(${templateString})`
 }
@@ -18,8 +17,7 @@ export interface FoundTemplate {
   start: number
   end: number
   code: string
-  varName: string,
-  identifier?: string,
+  varName: string
   value: string
 }
 
@@ -48,9 +46,8 @@ export function findTemplateString(
   if (reg.exec(source))
     throw new Error(`There are several candidates for the declaration of '${varName}'`)
 
-  console.log("find-template Found", found)
   let start = found.index!
-  let [code, identifier, jsString] = found
+  let [code, jsString] = found
   if (code[0] === "\n") {
     ++start
     code = code.substr(1)
@@ -63,7 +60,6 @@ export function findTemplateString(
     start,
     end: start + code.length,
     code,
-    identifier: identifier ? identifier : undefined,
     varName,
     // tslint:disable-next-line: no-eval
     value: eval(jsString)

@@ -32,7 +32,7 @@ export default createComponent({
 })
     `
     const { result, updated } = updateSource(source, options)
-    console.log(result)
+    // console.log(result)
     expect(updated).toBe(true)
     expect(result).toEqual(expect.not.stringContaining("<p>"))
   })

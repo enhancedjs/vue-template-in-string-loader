@@ -1,5 +1,5 @@
 import { compileTemplate } from "@vue/component-compiler-utils"
-import { findComponentProperty, FoundProperty, InlineTemplate } from "./find-component-property"
+import { findComponentProperty, FoundProperty } from "./find-component-property"
 import { FindTemplateOptions, findTemplateString } from "./find-template-string"
 const compiler = require("vue-template-compiler")
 
@@ -23,7 +23,6 @@ export function updateSource(
   const userOptions: FindTemplateOptions = {
     templateStringPrefix: options.templateStringPrefix
   }
-
   const compProp = findComponentProperty(source, userOptions)
   if (!compProp) {
     return {
@@ -32,11 +31,11 @@ export function updateSource(
     }
   }
 
-  const result = compProp.inlineTemplate ?
+  const result = compProp.inlineValue ?
     updateInlineProperty(compProp, source, options) :
     updateDeclaredVariable(compProp, source, options)
 
-  console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
+  // console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
 
   return {
     result,
@@ -45,7 +44,6 @@ export function updateSource(
 }
 
 function updateDeclaredVariable(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
-  console.log("optionsd2", options.templateStringPrefix)
   const userOptions: FindTemplateOptions = {
     templateStringPrefix: options.templateStringPrefix
   }
@@ -73,37 +71,18 @@ ${compiled.code}
   return { render, staticRenderFns }
 })()`
 
-
-  if (templateString.identifier) {
-    const tagFunction = `function ${templateString.identifier}(source: TemplateStringsArray): string
-  {
-      if (source.length !== 1)
-      throw new Error("Expressions are not allowed in a '${templateString.identifier}' template string")
-    return source[0]
-  }`
-
-   // Replace the template string with the variable from compilation
-    result =
-      result.substr(0, templateString.start) +
-      code + tagFunction +
-      result.substr(templateString.end)
-
-    return result
-  }
-
   // Replace the template string with the variable from compilation
   result =
     result.substr(0, templateString.start) +
     code +
     result.substr(templateString.end)
-
   return result
 }
 
 function updateInlineProperty(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
   //  Call the Vue compiler
   const compiled = compileTemplate({
-    source: compProp.inlineTemplate!.inlineValue,
+    source: compProp.inlineValue!,
     filename: options.fileName,
     compiler,
     transformAssetUrls: false,
@@ -115,25 +94,6 @@ function updateInlineProperty(compProp: FoundProperty, source: string, options: 
 ${compiled.code}
   return { render, staticRenderFns }
 })()`
-
-  if (compProp.inlineTemplate!.inlineIdentifier) {
-    const inlineTemplate: InlineTemplate = compProp.inlineTemplate!
-    const tagFunction = `function ${inlineTemplate.inlineIdentifier}(source: TemplateStringsArray): string
-  {
-      if (source.length !== 1)
-      throw new Error("Expressions are not allowed in a '${inlineTemplate.inlineIdentifier}' template string")
-    return source[0]
-  }`
-
-   // Replace the 'template' property by 'render' and 'staticRenderFns' properties
-    const result =
-    tagFunction +
-      source.substr(0, compProp.start) +
-      `${code}` +
-      source.substr(compProp.end)
-
-    return result
-  }
 
   // Replace the 'template' property by 'render' and 'staticRenderFns' properties
   const result =

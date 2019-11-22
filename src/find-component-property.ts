@@ -1,16 +1,11 @@
 import { FindTemplateOptions, identifier, lineBegin, templateStringRegex } from "./find-template-string"
 
-export interface InlineTemplate {
-  inlineIdentifier?: string
-  inlineValue: string
-}
-
 export interface FoundProperty {
   start: number
   end: number
   code: string
   varName: string
-  inlineTemplate?: InlineTemplate
+  inlineValue?: string
 }
 
 export function findComponentProperty(
@@ -37,20 +32,15 @@ export function findComponentProperty(
   if (reg.exec(source))
     throw new Error(`There are several candidates for the component`)
 
-  console.log("==find-component-property found", found)
-  const [, before, code, varName, id, jsString] = found
+  const [, before, code, varName, jsString] = found
   const start = found.index + before.length
-  const inlineTemplate: InlineTemplate = {
-    inlineIdentifier: id,
-    // tslint:disable-next-line: no-eval
-    inlineValue: eval(jsString)
-  }
 
   return {
     start,
     end: start + code.length,
     code,
     varName: !varName ? "template" : varName,
-    inlineTemplate: jsString === undefined ? undefined : inlineTemplate
+    // tslint:disable-next-line: no-eval
+    inlineValue: jsString === undefined ? undefined : eval(jsString)
   }
 }

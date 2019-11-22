@@ -10,7 +10,7 @@ const template = /* html */ def\`<p>abc</p>\`;
       `,
       "template"
     )
-    console.log(result)
+    // console.log(result)
     expect(result).toBeDefined()
   })
 
@@ -24,7 +24,7 @@ const template = /* html */ def\`<p>abc</p>\`;
     `,
       "template"
     )
-    console.log(result)
+    // console.log(result)
     expect(result).toBeDefined()
   })
 
