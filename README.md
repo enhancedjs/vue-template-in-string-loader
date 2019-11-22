@@ -4,7 +4,7 @@
 
 Compile Vue templates in template strings at build time.
 
-It allow to write single file components in standard JavaScript and TypeScript source files.
+It allows to write single file components in standard JavaScript and TypeScript source files.
 
 ## How to use
 
