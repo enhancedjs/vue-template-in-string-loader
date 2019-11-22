@@ -7,6 +7,7 @@ describe("Tests of 'findComponentProperty'", () => {
     }
     `
     const result = findComponentProperty(source)
+    console.log("RR: ", result)
     expect(result).toBeDefined()
     expect(result!.code).toBe("template")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)
@@ -52,6 +53,7 @@ export default createComponent({
     }
     `
     const result = findComponentProperty(source)
+    console.log("RR: ", result)
     expect(result).toBeDefined()
     expect(result!.code).toBe("template: /*  html */\`<p>ab</p>\`")
     expect(source.substr(result!.start, result!.code.length)).toBe(result!.code)

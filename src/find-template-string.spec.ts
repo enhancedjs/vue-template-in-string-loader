@@ -5,12 +5,12 @@ describe("Tests of 'findTemplateString'", () => {
     const result = findTemplateString(
       `
 // before
-const template = /* html */ \`<p>abc</p>\`;
+const template = /* html */ def\`<p>abc</p>\`;
   // after
       `,
       "template"
     )
-    // console.log(result)
+    console.log(result)
     expect(result).toBeDefined()
   })
 

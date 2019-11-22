@@ -9,6 +9,8 @@ export = function (source: string) {
     fileName: basename(this.resourcePath)
   })
 
+  console.log("optionsd", options)
+
   const { result, updated } = updateSource(source, options)
 
   console.info(
