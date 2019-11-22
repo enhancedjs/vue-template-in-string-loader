@@ -1,5 +1,5 @@
 import { compileTemplate } from "@vue/component-compiler-utils"
-import { findComponentProperty } from "./find-component-property"
+import { findComponentProperty, FoundProperty } from "./find-component-property"
 import { findTemplateString } from "./find-template-string"
 const compiler = require("vue-template-compiler")
 
@@ -27,43 +27,19 @@ export function updateSource(
     }
   }
 
-  // Template prompt assignmment
-  if (compProp.value) {
-    // const templateString = findTemplateString(source, compProp.varName)
+  const result = compProp.inlineValue ?
+    updateInlineProperty(compProp, source, options) :
+    updateDeclaredVariable(compProp, source, options)
 
-  //  Call the Vue compiler
-    const compiled = compileTemplate({
-      // tslint:disable-next-line: no-eval
-      source: eval(compProp.value),
-      filename: options.fileName,
-      compiler,
-      transformAssetUrls: false,
-      isProduction: false
-  })
+  console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
 
-  // Wrap the compiled result in a property
-    const code = `template: (() => {
-${compiled.code}
-  return { render, staticRenderFns }
-})()`
-
-  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
-    let result = source
-    result =
-    result.substr(0, compProp.start) +
-    `${code}` +
-    result.substr(compProp.end)
-
-    console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
-
-    return {
+  return {
     result,
     updated: true
   }
+}
 
-  }
-
-
+function updateDeclaredVariable(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
   const templateString = findTemplateString(source, compProp.varName)
 
   //  Call the Vue compiler
@@ -94,10 +70,30 @@ ${compiled.code}
     code +
     result.substr(templateString.end)
 
-  console.log("---- SOURCE\n", source, "\n---- RESULT\n", result)
+  return result
+}
 
-  return {
-    result,
-    updated: true
-  }
+function updateInlineProperty(compProp: FoundProperty, source: string, options: UpdateSourceOptions) {
+  //  Call the Vue compiler
+  const compiled = compileTemplate({
+    source: compProp.inlineValue!,
+    filename: options.fileName,
+    compiler,
+    transformAssetUrls: false,
+    isProduction: false
+  })
+
+  // Wrap the compiled result in properties
+  const code = `...(() => {
+${compiled.code}
+  return { render, staticRenderFns }
+})()`
+
+  // Replace the 'template' property by 'render' and 'staticRenderFns' properties
+  const result =
+    source.substr(0, compProp.start) +
+    `${code}` +
+    source.substr(compProp.end)
+
+  return result
 }

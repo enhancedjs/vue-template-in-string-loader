@@ -20,4 +20,20 @@ export default createComponent({
     expect(updated).toBe(true)
     expect(result).toEqual(expect.not.stringContaining("<p>"))
   })
+
+  test("Declare a variable", () => {
+    const source = `
+const template = \`abc\`
+export default createComponent({
+  name: "Comp1",
+  template,
+  setup() {
+  }
+})
+    `
+    const { result, updated } = updateSource(source, options)
+    // console.log(result)
+    expect(updated).toBe(true)
+    expect(result).toEqual(expect.not.stringContaining("<p>"))
+  })
 })
