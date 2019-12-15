@@ -8,5 +8,8 @@ export = function (source: string) {
     filePath: this.resourcePath,
     fileName: basename(this.resourcePath)
   })
-  return updateSource(source, options)
+  const result = updateSource(source, options)
+  // if (result !== source)
+  //   console.log(">>>> result:", result, "\n  >>source:", source)
+  return result
 }

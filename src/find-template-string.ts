@@ -1,12 +1,13 @@
 export const identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
 export const lineBegin = `(?:^|\\n)`
 
+const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
+const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
+
 export function templateStringRegex(prefix?: string) {
-  const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
-  const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
   prefix = prefix ? `(?:${prefix})` : defaultPrefix
   const templateString = "`(?:[^`\\\\]*(?:\\\\.[^`\\\\]*)*)`"
-  return `\\s*${prefix}\\s*(${templateString})`
+  return `${prefix}\\s*(${templateString})`
 }
 
 export interface FindTemplateOptions {
@@ -28,13 +29,12 @@ export function findTemplateString(
 ): FoundTemplate {
 
   const varDeclar = `(?:const|let|var)\\s${varName}`
-  const declEnd = "(?:\\s*;)?"
   // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
   // const singleQuote = "'(?:[^'\\\\\\n]*(?:\\\\.[^'\\\\\\n]*)*)'"
   // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
-    `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}\\s*${declEnd}`,
+    `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}(?:\\s*;)?`,
     "g"
   )
 
@@ -51,13 +51,16 @@ export function findTemplateString(
     ++start
     code = code.substr(1)
   }
+
   const lastIndex = code.length - 1
   if (code[lastIndex] === ";")
     code = code.substr(0, lastIndex)
 
+  const end = start + code.length
+
   return {
     start,
-    end: start + code.length,
+    end,
     code,
     varName,
     // tslint:disable-next-line: no-eval

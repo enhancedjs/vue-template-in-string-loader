@@ -1,6 +1,6 @@
 {
   "name": "vue-template-in-string-loader",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "license": "CC0-1.0",
   "description": "Compile Vue templates in template strings at build time.",
   "main": "dist/index.js",

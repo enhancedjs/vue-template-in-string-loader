@@ -39,15 +39,17 @@ const template = /* html */ def\`<p>abc</p>\`;
     const prefix: FindTemplateOptions = {
       templateStringPrefix: "def"
     }
-    const result = findTemplateString(
-      `
+    const source = `
 // before
 const template = def \`<p>abc</p>\`;
   // after
-      `,
-      "template",
-      prefix
-    )
+    `
+    const result = findTemplateString(source, "template", prefix)
+    // console.log(
+    //   result,
+    //   "\nBEFORE:", "{{{" + source.substr(0, result.start) + "}}}",
+    //   "\nAFTER:", "{{{" + source.substr(result.end) + "}}}",
+    // )
     expect(result).toBeDefined()
   })
 

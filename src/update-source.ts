@@ -45,6 +45,7 @@ ${compiled.code}
   return { render, staticRenderFns }
 })()`
 
+  // console.log(">> update source", templateString)
   // Replace the template string with the variable from compilation
   result =
     result.substr(0, templateString.start) +

@@ -6,7 +6,7 @@ describe("Tests of 'updateSource'", () => {
     filePath: "a/b/c/file1.js"
   }
 
-  test("One variable named 'template'", () => {
+  test("Inline template", () => {
     const source = `
 export default createComponent({
   name: "Comp1",
@@ -31,6 +31,7 @@ export default createComponent({
 })
     `
     const result = updateSource(source, options)
+    // console.log("=====>", result)
     expect(result !== source).toBe(true)
     expect(result).toEqual(expect.not.stringContaining("<p>"))
   })
