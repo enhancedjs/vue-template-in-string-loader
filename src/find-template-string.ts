@@ -28,12 +28,7 @@ export function findTemplateString(
   varName: string,
   options?: FindTemplateOptions
 ): FoundTemplate {
-
   const varDeclar = `(?:const|let|var)\\s${varName}`
-  // const doubleQuote = `"(?:[^"\\\\\\n]*(?:\\\\.[^"\\\\\\n]*)*)"`
-  // const singleQuote = "'(?:[^'\\\\\\n]*(?:\\\\.[^'\\\\\\n]*)*)'"
-  // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
-  // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
     // tslint:disable-next-line: whitespace
     `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}(?:\\s*;)?`,
