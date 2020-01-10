@@ -1,5 +1,6 @@
 export const identifier = "[a-zA-Z_][a-zA-Z0-9_]*"
-export const lineBegin = `(?:^|\\n)`
+const newLine = `(?:\\r?\\n|\\r)`
+export const lineBegin = `(?:^|${newLine})`
 
 const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
 const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
@@ -34,6 +35,7 @@ export function findTemplateString(
   // const singleString = `(?:${templateString}|${doubleQuote}|${singleQuote})`
   // const concatString = `${singleString}(?:\\s*\\+\\s*${singleString})*`
   const reg = new RegExp(
+    // tslint:disable-next-line: whitespace
     `${lineBegin}${varDeclar}\\s*=\\s*${templateStringRegex(options?.templateStringPrefix)}(?:\\s*;)?`,
     "g"
   )
@@ -47,7 +49,11 @@ export function findTemplateString(
 
   let start = found.index!
   let [code, jsString] = found
-  if (code[0] === "\n") {
+
+  if (code[0] === "\r" && code[1] === "\n") {
+    start += 2
+    code = code.substr(2)
+  } else if (code[0] === "\n" || code[0] === "\r") {
     ++start
     code = code.substr(1)
   }
