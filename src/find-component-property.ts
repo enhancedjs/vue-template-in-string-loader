@@ -13,7 +13,7 @@ export function findComponentProperty(
   options?: FindTemplateOptions
 ): FoundProperty | undefined {
 
-  const compBegin = "export\\s+default\\s*(?:createComponent\\s*\\(\\s*)?{"
+  const compBegin = "export\\s+default\\s*(?:(?:defineComponent|createComponent)\\s*\\(\\s*)?{"
   const propsWithoutBrackets = "(?:[^}{]*,)*"
   const compBefore = `\\s*(?:${propsWithoutBrackets}\\s*)?`
   const propValue = `(${identifier}|${templateStringRegex(options?.templateStringPrefix)})`

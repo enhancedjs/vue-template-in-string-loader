@@ -8,7 +8,7 @@ describe("Tests of 'updateSource'", () => {
 
   test("Inline template", () => {
     const source = `
-export default createComponent({
+export default defineComponent({
   name: "Comp1",
   template: /*  html */ df \`<p>abc</p>\`,
   setup() {
@@ -22,8 +22,8 @@ export default createComponent({
 
   test("Declare a variable", () => {
     const source = `
-const template = def\`abc\`
-export default createComponent({
+const template = def\`<p>abc</p>\`
+export default defineComponent({
   name: "Comp1",
   template,
   setup() {

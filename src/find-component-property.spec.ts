@@ -26,7 +26,7 @@ export default {
 
   test("True code", () => {
     const source = `
-export default createComponent({
+export default defineComponent({
     name: "FirstComp",
     template,
     setup() {
