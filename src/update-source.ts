@@ -31,6 +31,10 @@ function updateDeclaredVariable(compProp: FoundProperty, source: string, options
     transformAssetUrls: false,
     isProduction: false
   })
+  if (typeof compiled.errors === "string")
+    throw new Error(compiled.errors)
+  else if (compiled.errors.length > 0)
+    throw new Error(compiled.errors.join("\n"))
 
   // Replace the 'template' property by 'render' and 'staticRenderFns' properties
   let result = source
