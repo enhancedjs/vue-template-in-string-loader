@@ -1,11 +1,10 @@
-# vue-template-in-string-loader
+# @enhancedjs/vue-template-in-string-loader
 
-[![Build Status](https://travis-ci.com/paroi-tech/vue-template-in-string-loader.svg?branch=master)](https://travis-ci.com/paroi-tech/vue-template-in-string-loader)
-[![Dependencies Status](https://david-dm.org/paroi-tech/vue-template-in-string-loader/status.svg)](https://david-dm.org/paroi-tech/vue-template-in-string-loader)
-<!-- [![Codacy Badge](https://api.codacy.com/project/badge/Grade/136865c77ccd40a9bdbe324518270e2e)](https://www.codacy.com/manual/paleo/vue-template-in-string-loader?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=paroi-tech/vue-template-in-string-loader&amp;utm_campaign=Badge_Grade) -->
-[![npm](https://img.shields.io/npm/dm/vue-template-in-string-loader)](https://www.npmjs.com/package/vue-template-in-string-loader)
-![Type definitions](https://img.shields.io/npm/types/vue-template-in-string-loader)
-[![GitHub](https://img.shields.io/github/license/paroi-tech/vue-template-in-string-loader)](https://github.com/paroi-tech/vue-template-in-string-loader)
+[![Build Status](https://travis-ci.com/enhancedjs/vue-template-in-string-loader.svg?branch=master)](https://travis-ci.com/enhancedjs/vue-template-in-string-loader)
+[![Dependencies Status](https://david-dm.org/enhancedjs/vue-template-in-string-loader/status.svg)](https://david-dm.org/enhancedjs/vue-template-in-string-loader)
+[![npm](https://img.shields.io/npm/dm/@enhancedjs/vue-template-in-string-loader)](https://www.npmjs.com/package/@enhancedjs/vue-template-in-string-loader)
+![Type definitions](https://img.shields.io/npm/types/@enhancedjs/vue-template-in-string-loader)
+[![GitHub](https://img.shields.io/github/license/enhancedjs/vue-template-in-string-loader)](https://github.com/enhancedjs/vue-template-in-string-loader)
 
 Compile Vue templates in template strings at build time.
 
@@ -13,10 +12,10 @@ It allows to write single file components in standard JavaScript and TypeScript 
 
 ## How to use
 
-First, add `vue-template-in-string-loader` to a Vue application:
+First, add `@enhancedjs/vue-template-in-string-loader` to a Vue application:
 
 ```sh
-npm install vue-template-in-string-loader --save-dev
+npm install @enhancedjs/vue-template-in-string-loader --save-dev
 ```
 
 In the `vue.config.js` file, add a `configureWebpack` section:
@@ -29,7 +28,7 @@ In the `vue.config.js` file, add a `configureWebpack` section:
           test: /\.(js|ts)$/,
           exclude: /node_modules/,
           use: {
-            loader: "vue-template-in-string-loader"
+            loader: "@enhancedjs/vue-template-in-string-loader"
           }
         }
       ]
