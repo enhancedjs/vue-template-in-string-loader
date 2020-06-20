@@ -1,6 +1,6 @@
 {
   "name": "@enhancedjs/vue-template-in-string-loader",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "license": "CC0-1.0",
   "description": "Pre-compile Vue templates in JS template strings at compile time.",
   "author": "EnhancedJS Team",

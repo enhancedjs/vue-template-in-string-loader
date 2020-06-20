@@ -10,7 +10,7 @@ describe("Tests of 'updateSource'", () => {
     const source = `
 export default defineComponent({
   name: "Comp1",
-  template: /*  html */ df \`<p>abc</p>\`,
+  template: /*  html */ vueTemplate \`<p>abc</p>\`,
   setup() {
   }
 })
@@ -22,7 +22,7 @@ export default defineComponent({
 
   test("Declare a variable", () => {
     const source = `
-const template = def\`<p>abc</p>\`
+const template = vueTemplate\`<p>abc</p>\`
 export default defineComponent({
   name: "Comp1",
   template,

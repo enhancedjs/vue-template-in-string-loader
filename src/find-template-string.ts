@@ -3,7 +3,7 @@ const newLine = `(?:\\r?\\n|\\r)`
 export const lineBegin = `(?:^|${newLine})`
 
 const comment = "/\\*\\s*[a-zA-Z0-9_]*\\s*\\*/"
-const defaultPrefix = `(?:${comment})?\\s*(?:${identifier})?`
+const defaultPrefix = `(?:${comment})?\\s*(?:vueTemplate)?`
 
 export function templateStringRegex(prefix?: string) {
   prefix = prefix ? `(?:${prefix})` : defaultPrefix

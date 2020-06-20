@@ -6,11 +6,33 @@
 ![Type definitions](https://img.shields.io/npm/types/@enhancedjs/vue-template-in-string-loader)
 [![GitHub](https://img.shields.io/github/license/enhancedjs/vue-template-in-string-loader)](https://github.com/enhancedjs/vue-template-in-string-loader)
 
-Compile Vue templates in template strings at build time.
+It is a webpack loader that pre-compiles Vue templates in JavaScript or TypeScript template strings at compile time. It allows to write single file components in standard JavaScript and TypeScript source files.
 
-It allows to write single file components in standard JavaScript and TypeScript source files.
+## Example
 
-## How to use
+```js
+const template = vueTemplate`
+<div class="MyComponent">
+  … some Vue template code…
+</div>
+`
+
+export default defineComponent({
+  name: "MyComponent",
+  template,
+})
+```
+
+The tag `vueTemplate` is optional. It helps the vscode extension [enhancedjs.html-in-template-string](https://marketplace.visualstudio.com/items?itemName=enhancedjs.html-in-template-string) to add some HTML syntax highlighting.
+
+This webpack loader will replace the template string and its tag `vueTemplate` at compile time, so it is unecessary to provide an implementation for runtime. But, in a TypeScript project, a declaration has to be provided:
+
+```ts
+// global.d.ts
+declare function vueTemplate(text: TemplateStringsArray): string;
+```
+
+## How to configure
 
 First, add `@enhancedjs/vue-template-in-string-loader` to a Vue application:
 
@@ -35,6 +57,12 @@ In the `vue.config.js` file, add a `configureWebpack` section:
     }
   },
 ```
+
+## See also
+
+* The Visual Studio Code plugin [enhancedjs.html-in-template-string](https://github.com/enhancedjs/html-in-template-string-vscode);
+* The webpack loader [@enhancedjs/css-in-template-string-loader](https://github.com/enhancedjs/css-in-template-string-loader);
+* The Visual Studio Code plugin [enhancedjs.sass-in-template-string](https://github.com/enhancedjs/sass-in-template-string-vscode).
 
 ## Contribute
 

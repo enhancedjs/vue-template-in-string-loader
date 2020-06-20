@@ -5,7 +5,7 @@ describe("Tests of 'findTemplateString'", () => {
     const result = findTemplateString(
       `
 // before
-const template = /* html */ def\`<p>abc</p>\`;
+const template = /* html */ vueTemplate\`<p>abc</p>\`;
   // after
       `,
       "template"
